@@ -3,6 +3,7 @@ import requests
 import os
 import html as html_lib
 from typing import List, Dict, Any
+from streamlit_autorefresh import st_autorefresh
 import streamlit as st
 from streamlit.components.v1 import html as components_html
 
