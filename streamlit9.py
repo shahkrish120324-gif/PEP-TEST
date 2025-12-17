@@ -109,7 +109,7 @@ def get_realtime_messages(phone: str) -> List[Dict[str, Any]]:
 def send_message_api(from_phone: str, text: str) -> Dict[str, Any]:
     try:
         resp = requests.post(
-            f"{API_BASE}/message/send-test-patient",
+            f"{API_BASE}/message/send-test-patient-2",
             data={"From": from_phone, "To": TENANT_NUMBER, "Body": text},
             timeout=SEND_TIMEOUT,
         )
@@ -145,6 +145,7 @@ def format_time(ts: str) -> str:
 def render_chat_iframe(messages: List[Dict[str, Any]], iframe_height: int = 520):
     rows = []
     for msg in sorted(messages, key=lambda x: x.get("createdAt", "")):
+        print("All Messages",msg)
         patient = is_patient_msg(msg)
         role = "patient" if patient else "tenant"
         msg_text = html_lib.escape(msg.get("message", "") or "")
