@@ -14,7 +14,7 @@ TENANT_NUMBER = os.environ.get("TENANT_NUMBER", "+16148193454")
 
 REFRESH_INTERVAL_MS = 2000  # 2 seconds
 SEND_TIMEOUT = 15  # seconds for POST / send
-LOAD_TIMEOUT = 20
+# LOAD_TIMEOUT = 20
 
 st.set_page_config(page_title="Patient Messaging Console", layout="wide")
 
@@ -84,6 +84,8 @@ if "loaded_phone" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+if "session_start_ts" not in st.session_state:
+    st.session_state.session_start_ts = datetime.now(timezone.utc)
 # ensure outgoing_text exists before any widget uses that key
 if "outgoing_text" not in st.session_state:
     st.session_state.outgoing_text = ""
@@ -246,9 +248,11 @@ phone = st.text_input("Patient phone number", placeholder="+16144683607", value=
 # Load past messages only when a phone number is provided and it's different from what's loaded
 if phone and phone != st.session_state.loaded_phone:
     with st.spinner("Loading conversation…"):
-        st.session_state.messages = load_past_messages(phone)
+        # st.session_state.messages = []
         st.session_state.loaded_phone = phone
         st.session_state.patient_phone = phone
+        st.session_state.messages = []
+        st.session_state.session_start_ts = datetime.now(timezone.utc)
 
 # If no phone has been loaded yet, show a simple placeholder and skip rendering chat + send form
 if not st.session_state.loaded_phone:
